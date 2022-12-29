@@ -131,10 +131,10 @@ def get_convnext(size="small"):
             w_outs.append(w_out)
         w_ins = torch.stack(w_ins, dim=0)
         w_outs = torch.stack(w_outs, dim=0)
-        model.w_ins = w_ins
-        model.w_outs = w_outs
-        model.normed_w_ins = w_ins / w_ins.norm(dim=-1, keepdim=True)
-        model.normed_w_outs = w_outs / w_outs.norm(dim=-1, keepdim=True)
+        model.w_ins = nn.Parameter(w_ins, requires_grad=False)
+        model.w_outs = nn.Parameter(w_outs, requires_grad=False)
+        model.normed_w_ins = nn.Parameter(w_ins / w_ins.norm(dim=-1, keepdim=True), requires_grad=False)
+        model.normed_w_outs = nn.Parameter(w_outs / w_outs.norm(dim=-1, keepdim=True), requires_grad=False)
 
         return model
     if size == "base":
