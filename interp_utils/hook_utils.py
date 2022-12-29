@@ -14,7 +14,7 @@ def register_hook(module, hook_fn: Callable):
         )
         return
     removable_handle = module.register_forward_hook(
-        lambda module, input, output: hook_fn(input, output, module.cache)
+        lambda module, input, output: hook_fn(module, input, output)
     )
     module.hooks[hook_fn.__name__] = removable_handle
     return removable_handle
