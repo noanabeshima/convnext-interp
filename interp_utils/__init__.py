@@ -6,7 +6,7 @@ from .rendering import (
     heatmap,
     qq_plot,
     str_arr_add,
-    preprocess_arr,
+    tensor_to_numpy,
     plthist,
     hist,
 )
