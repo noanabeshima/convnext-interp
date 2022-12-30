@@ -1,4 +1,3 @@
-from functools import cache
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -109,7 +108,6 @@ def convnext_isotropic_large(pretrained=False, **kwargs):
     return model
 
 
-@cache
 def get_convnext(size="small"):
     if size == "small":
         model = convnext_isotropic_small(pretrained=True)
