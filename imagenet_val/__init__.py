@@ -4,5 +4,5 @@ from .imagenet_val_classes import (
     convnext_preprocess,
     class_labels,
     blank_image,
-    simple_labels,
+    simple_class_labels,
 )

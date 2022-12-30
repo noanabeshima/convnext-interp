@@ -13,7 +13,7 @@ dirname = os.path.dirname(__file__)
 
 with open(dirname + "/ordered_class_labels.txt", "r") as f:
     class_labels = np.array(f.read().split("\n"))
-simple_labels = np.array([label.split(",")[0] for label in class_labels])
+simple_class_labels = np.array([label.split(",")[0] for label in class_labels])
 
 
 center_crop = transforms.CenterCrop(224)
@@ -158,11 +158,11 @@ class ValData:
 
     @property
     def class_names(self):
-        return simple_labels[list(set(self.class_ids))]
+        return simple_class_labels[list(set(self.class_ids))]
 
     @property
-    def all_simple_labels(self):
-        return simple_labels
+    def all_simple_class_labels(self):
+        return simple_class_labels
 
     @property
     def _val_indexes(self):
