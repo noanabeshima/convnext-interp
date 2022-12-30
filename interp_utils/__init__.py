@@ -17,6 +17,7 @@ from .general_utils import (
     reload_module_hack,
     see,
     asee,
+    TensorHistogramObserver,
 )
 from .seriation_utils import (
     get_local_distance_minimizing_permutation,

@@ -35,12 +35,13 @@ def clear_cache(module):
         clear_cache(child)
 
 
-def remove_hooks(module):
+def remove_hooks(module, quiet=False):
     if hasattr(module, "hooks"):
         for hook_name, removable_handle in module.hooks.items():
-            print("Removing hook: ", module.__class__.__name__, hook_name)
+            if quiet is False:
+                print("Removing hook: ", module.__class__.__name__, hook_name)
             removable_handle.remove()
         module.hooks = {}
     clear_cache(module)
     for child in module.children():
-        remove_hooks(child)
+        remove_hooks(child, quiet=quiet)
