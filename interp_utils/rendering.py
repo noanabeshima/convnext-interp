@@ -255,7 +255,13 @@ def plthist(x, *args, **kwargs):
     plt.show()
 
 
-def hist(x, *args, **kwargs):
+def hist(x, marginal=None, *args, **kwargs):
     x = tensor_to_numpy(x)
-    return px.histogram(x, *args, **kwargs)
+    if marginal is not None:
+        marginal = marginal if marginal is not True else range(x.shape[0])
+        fig = px.histogram(x, marginal='rug', hover_name=marginal, *args, **kwargs)
+    else:
+        fig = px.histogram(x, *args, **kwargs)
+    fig.update_layout(showlegend=False)
+    return fig
 

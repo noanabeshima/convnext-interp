@@ -1,4 +1,4 @@
-from .hook_utils import register_hook, register_hooks, remove_hooks, clear_cache
+from .hook_utils import register_hook, register_hooks, remove_hooks, clear_cache, caching_hook
 from .rendering import (
     render_array,
     render_array_w_sign,
@@ -14,7 +14,7 @@ from .general_utils import (
     get_scheduler,
     is_iterable,
     opt,
-    reload_module_hack,
+    reload_module,
     see,
     asee,
     TensorHistogramObserver,
@@ -24,4 +24,4 @@ from .seriation_utils import (
     get_seriation_permutations,
     seriate,
 )
-from .s3_utils import upload_file, upload_figs
+from .s3_utils import upload_file, upload_figs, upload_fig

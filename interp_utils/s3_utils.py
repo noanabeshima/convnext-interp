@@ -82,3 +82,5 @@ def upload_figs(figs, fname, bucket="plotly-figs", fig_info=[], public=True):
     url = upload_file("/tmp/" + fname, bucket, object_name=fname, public=public)
     os.remove("/tmp/" + fname)
     return url
+
+upload_fig = upload_figs

@@ -133,6 +133,7 @@ def get_convnext(size="small"):
         model.w_outs = nn.Parameter(w_outs, requires_grad=False)
         model.normed_w_ins = nn.Parameter(w_ins / w_ins.norm(dim=-1, keepdim=True), requires_grad=False)
         model.normed_w_outs = nn.Parameter(w_outs / w_outs.norm(dim=-1, keepdim=True), requires_grad=False)
+        model.normed_head = nn.Parameter(head.T / head.T.norm(dim=-1, keepdim=True), requires_grad=False)
 
         return model
     if size == "base":
