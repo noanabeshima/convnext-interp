@@ -1,10 +1,8 @@
 from tsp_solver.greedy_numpy import solve_tsp
 import torch
 import numpy as np
-from functools import cache
 
 
-@cache
 def get_local_distance_minimizing_permutation(x):
     """Get a permutation that minimizes the travelling distance between the rows of x"""
     assert len(x.shape) == 2, "x should be interpretable as a list of vecs"
@@ -18,8 +16,6 @@ def get_local_distance_minimizing_permutation(x):
     )
     return permutation
 
-
-@cache
 def get_seriation_permutations(x):
     perm_1, perm_2 = get_local_distance_minimizing_permutation(
         x
@@ -27,7 +23,6 @@ def get_seriation_permutations(x):
     return perm_1, perm_2
 
 
-@cache
 def seriate(x):
     perm_1, perm_2 = get_local_distance_minimizing_permutation(
         x
