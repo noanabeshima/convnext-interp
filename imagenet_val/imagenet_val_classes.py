@@ -6,7 +6,6 @@ from IPython.display import display
 import os
 from interp_utils import get_image_grid, is_iterable
 import numpy as np
-from functools import cache
 
 dirname = os.path.dirname(__file__)
 
@@ -87,7 +86,6 @@ class ValData:
         else:
             assert False
 
-    @cache
     def init_w_entire_validation_set(self):
         """Load entire validation dataset"""
         with open(dirname + "/fname_to_info.json", "r") as f:
@@ -112,7 +110,6 @@ class ValData:
         for i in range(0, len(self.val_images), batch_size):
             yield ValData(self.val_images[i : i + batch_size])
 
-    @cache
     def get_class(self, class_id):
         return ValData(
             [image for image in self.val_images if image.class_id == class_id]
