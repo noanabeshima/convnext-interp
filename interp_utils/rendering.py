@@ -76,6 +76,34 @@ def str_arr_add(*args):
     return res
 
 
+def construct_dim_info(dim_info: dict, dim_name="idx", dim_len=None, perm=None, mask=None, include_idx=False):
+        dim_info = {} if dim_info is None else dim_info
+
+        if include_idx is True:
+            dim_info[f"{dim_name}"] = np.arange(dim_len)
+
+        for k, v in dim_info.items():
+            if is_tensor(v):
+                dim_info[k] = tensor_to_numpy(v)
+            else:
+                if not isinstance(v, np.ndarray):
+                    dim_info[k] = np.array(v)
+
+        if perm is not None:
+            dim_info = {k: v[perm] for k, v in dim_info.items()}
+        
+        if mask is not None:
+            mask = tensor_to_numpy(mask)[perm]
+            for k, v in dim_info.items():
+                dim_info[k] = v[mask]
+    
+        dim_info = str_arr_add(
+            *[str_arr_add(k + ": ", v, "<br>") for k, v in dim_info.items()]
+        )
+        dim_info = np.array(dim_info).astype(str).tolist()
+        return dim_info
+
+
 def heatmap(
     arr,
     perm_0=None,
@@ -124,32 +152,6 @@ def heatmap(
     # if permutations are not provided, use the identity permutation
     perm_0 = np.arange(arr.shape[0]) if perm_0 is None else tensor_to_numpy(perm_0)
     perm_1 = np.arange(arr.shape[1]) if perm_1 is None else tensor_to_numpy(perm_1)
-
-    def construct_dim_info(dim_info: dict, dim_name: str, dim_len, perm, mask=None, include_idx=False):
-        dim_info = {} if dim_info is None else dim_info
-
-        if include_idx is True:
-            dim_info[f"{dim_name}"] = np.arange(dim_len)
-
-        for k, v in dim_info.items():
-            if is_tensor(v):
-                dim_info[k] = tensor_to_numpy(v)
-            else:
-                if not isinstance(v, np.ndarray):
-                    dim_info[k] = np.array(v)
-
-        dim_info = {k: v[perm] for k, v in dim_info.items()}
-        
-        if mask is not None:
-            mask = tensor_to_numpy(mask)[perm]
-            for k, v in dim_info.items():
-                dim_info[k] = v[mask]
-    
-        dim_info = str_arr_add(
-            *[str_arr_add(k + ": ", v, "<br>") for k, v in dim_info.items()]
-        )
-        dim_info = np.array(dim_info).astype(str).tolist()
-        return dim_info
 
     # Construct hovertemplate and dim info for each dimension (0 and 1)
     hovertemplate = ""
@@ -255,13 +257,19 @@ def plthist(x, *args, **kwargs):
     plt.show()
 
 
-def hist(x, marginal=None, *args, **kwargs):
+def hist(x, perm=None, info=None, include_idx=False, *args, **kwargs):
     x = tensor_to_numpy(x)
-    if marginal is not None:
-        marginal = marginal if marginal is not True else range(x.shape[0])
-        fig = px.histogram(x, marginal='rug', hover_name=marginal, *args, **kwargs)
+    perm = perm if perm is not None else np.arange(x.shape[0])
+
+    if info is not None:
+        if isinstance(info, dict):
+            info = construct_dim_info(info, dim_len=len(x), include_idx=include_idx, perm=perm)
+        if info is True:
+            info = np.array(range(x.shape[0]))
+        fig = px.histogram(x[perm], marginal='rug', hover_name=info, *args, **kwargs)
     else:
-        fig = px.histogram(x, *args, **kwargs)
+        fig = px.histogram(x[perm], *args, **kwargs)
+    
     fig.update_layout(showlegend=False)
     return fig
 
